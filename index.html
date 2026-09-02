@@ -193,6 +193,35 @@
   </div>  <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});}));
-  </script></body>
+  </script><form id="contactForm">
+  <input id="name" placeholder="Your Name" required />
+  <input id="phone" placeholder="0758610962" required />
+  <select id="service">
+    <option>Website Design</option>
+    <option>App Development</option>
+    <option>Graphic Design</option>
+  </select>
+  <textarea id="message" placeholder="Tell me about your project"></textarea>
+  <button type="submit">Send Request</button>
+</form>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    service: document.getElementById('service').value,
+    message: document.getElementById('message').value
+  };
+  // When testing locally use localhost, later you will replace with your public URL
+  const res = await fetch('http://localhost:3000/api/inquiry', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify(data)
+  });
+  alert('Sent! Stephen will call you soon.');
+});
+</script></body>
                                                          </html>
             
