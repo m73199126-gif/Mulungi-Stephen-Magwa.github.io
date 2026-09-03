@@ -190,20 +190,26 @@
   </div>
 </footer>
 
-  </div>  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});}));
-  </script><form id="contactForm">
-  <input id="name" placeholder="Your Name" required />
-  <input id="phone" placeholder="0758610962" required />
-  <select id="service">
+  <script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+<form id="contactForm" style="max-width:500px;margin:20px auto;padding:15px;">
+  <input id="name" placeholder="Your Name" required style="width:100%;padding:10px;margin:5px 0;" />
+  <input id="phone" placeholder="0758610962" required style="width:100%;padding:10px;margin:5px 0;" />
+  <select id="service" style="width:100%;padding:10px;margin:5px 0;">
     <option>Website Design</option>
     <option>App Development</option>
     <option>Graphic Design</option>
   </select>
-  <textarea id="message" placeholder="Tell me about your project"></textarea>
-  <button type="submit">Send Request</button>
+  <textarea id="message" placeholder="Tell me about your project" style="width:100%;padding:10px;margin:5px 0;"></textarea>
+  <button type="submit" style="width:100%;padding:12px;background:black;color:white;">Send Request</button>
 </form>
+
+<div style="padding:20px; background:#F5F5F5; margin-top:20px; border-radius:10px;">
+  <h2>Our Agencies - Live Data</h2>
+  <div id="agency-list">Loading agencies...</div>
+</div>
 
 <script>
 document.getElementById('contactForm').addEventListener('submit', async (e)=>{
@@ -214,78 +220,24 @@ document.getElementById('contactForm').addEventListener('submit', async (e)=>{
     service: document.getElementById('service').value,
     message: document.getElementById('message').value
   };
-  // When testing locally use localhost, later you will replace with your public URL
-  const res = await fetch('http://localhost:3000/api/inquiry', {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify(data)
-  });
-  alert('Sent! Stephen will call you soon.');
+  try{
+    await fetch('https://agency-api-ab16.onrender.com/inquiry', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    alert('Sent! Stephen will call you soon.');
+  }catch(err){ alert('Error: '+err); }
 });
-</script><<!-- AGENCY LIVE API SECTION - START -->
-<div style="padding:20px; background:#f5f5f5; margin-top:30px;">
-  <h2>Our Agencies - Live Data</h2>
-  <div id="agency-list">Loading agencies...</div>
-</div>
 
-<script>
 fetch('https://agency-api-ab16.onrender.com/agency')
 .then(r=>r.json())
 .then(data=>{
   let items = Array.isArray(data)? data : data.data || [];
-  let html = items.map(a=>`<div style="background:white;padding:10px;margin:10px;border-radius:8px;">${JSON.stringify(a)}</div>`).join('');
+  let html = items.map(a=>`<div style="background:white;padding:12px;margin:8px 0;border-radius:8px;"><strong>${a.name||'Agency'}</strong> - ${a.service||''}</div>`).join('');
   document.getElementById('agency-list').innerHTML = html || 'No agencies yet';
 })
-.catch(e=>{document.getElementById('agency-list').innerHTML='Error: '+e})
+.catch(e=>{document.getElementById('agency-list').innerHTML='Failed: '+e;});
 </script>
-<!-- AGENCY LIVE API SECTION - START -->
-<div style="padding:20px; background:#f5f5f5; margin-top:30px;">
-  <h2>Our Agencies - Live Data</h2>
-  <div id="agency-list">Loading agencies...</div>
-</div>
-
-<script>
-fetch('https://agency-api-ab16.onrender.com/agency')
-.then(r=>r.json())
-.then(data=>{
-  let items = Array.isArray(data)? data : data.data || [];
-  let html = items.map(a=>`<div style="background:white;padding:10px;margin:10px;border-radius:8px;">${JSON.stringify(a)}</div>`).join('');
-  document.getElementById('agency-list').innerHTML = html || 'No agencies yet';
-})
-.catch(e=>{document.getElementById('agency-list').innerHTML='Error: '+e})
-</script>
-<body>
-           <!-- AGENCY LIVE API SECTION - START -->
-<div style="padding:20px; background:#f5f5f5; margin-top:30px;">
-  <h2>Our Agencies - Live Data</h2>
-  <div id="agency-list">Loading agencies...</div>
-</div>
-
-<script>
-fetch('https://agency-api-ab16.onrender.com/agency')
-.then(r=>r.json())
-.then(data=>{
-  let items = Array.isArray(data)? data : data.data || [];
-  let html = items.map(a=>`<div style="background:white;padding:10px;margin:10px;border-radius:8px;">${JSON.stringify(a)}</div>`).join('');
-  document.getElementById('agency-list').innerHTML = html || 'No agencies yet';
-})
-.catch(e=>{document.getElementById('agency-list').innerHTML='Error: '+e})
-</script></body>
-                       <!-- AGENCY LIVE API SECTION - START -->
-<div style="padding:20px; background:#f5f5f5; margin-top:30px;">
-  <h2>Our Agencies - Live Data</h2>
-  <div id="agency-list">Loading agencies...</div>
-</div>
-
-<script>
-fetch('https://agency-api-ab16.onrender.com/agency')
-.then(r=>r.json())
-.then(data=>{
-  let items = Array.isArray(data)? data : data.data || [];
-  let html = items.map(a=>`<div style="background:white;padding:10px;margin:10px;border-radius:8px;">${JSON.stringify(a)}</div>`).join('');
-  document.getElementById('agency-list').innerHTML = html || 'No agencies yet';
-})
-.catch(e=>{document.getElementById('agency-list').innerHTML='Error: '+e})
-</script>
-<!-- AGENCY LIVE API SECTION - END -->                    </html>
-            
+</body>
+</html>
