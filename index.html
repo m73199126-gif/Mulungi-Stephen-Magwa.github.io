@@ -210,7 +210,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
   <h2>Our Agencies - Live Data</h2>
   <div id="agency-list">Loading agencies...</div>
 </div>
-
 <script>
 document.getElementById('contactForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -221,7 +220,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e)=>{
     message: document.getElementById('message').value
   };
   try{
-    await fetch('https://agency-api-ab16.onrender.com/inquiry', {
+    await fetch('https://agency-api-ab16.onrender.com/api/data',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(data)
@@ -230,14 +229,15 @@ document.getElementById('contactForm').addEventListener('submit', async (e)=>{
   }catch(err){ alert('Error: '+err); }
 });
 
-fetch('https://agency-api-ab16.onrender.com/agency')
+fetch('https://agency-api-ab16.onrender.com/api/users')
 .then(r=>r.json())
 .then(data=>{
   let items = Array.isArray(data)? data : data.data || [];
-  let html = items.map(a=>`<div style="background:white;padding:12px;margin:8px 0;border-radius:8px;"><strong>${a.name||'Agency'}</strong> - ${a.service||''}</div>`).join('');
+  let html = items.map(a=> `<div style="background:white;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1)"><strong>${a.name || a.id || 'Agency'}</strong> - ${a.service || a.email || ''} <br>${a.phone || ''}</div>`).join('');
   document.getElementById('agency-list').innerHTML = html || 'No agencies yet';
 })
-.catch(e=>{document.getElementById('agency-list').innerHTML='Failed: '+e;});
-</script>
+.catch(e=>{document.getElementById('agency-list').innerHTML = 'Failed: '+e;});
+               </script>
+
 </body>
 </html>
