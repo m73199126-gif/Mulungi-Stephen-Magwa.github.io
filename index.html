@@ -194,40 +194,33 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
-<form id="contactForm" style="max-width:500px;margin:20px auto;padding:15px;">
-  <input id="name" placeholder="Your Name" required style="width:100%;padding:10px;margin:5px 0;" />
-  <input id="phone" placeholder="0758610962" required style="width:100%;padding:10px;margin:5px 0;" />
-  <select id="service" style="width:100%;padding:10px;margin:5px 0;">
+<form id="contactForm" action="https://formsubmit.co/m73199126@gmail.com" method="POST" style="max-width:500px;margin:20px auto;padding:15px;">
+  <input id="cName" name="name" placeholder="Your Name" required style="width:100%;padding:10px;margin:5px 0;"/>
+  <input id="cPhone" name="phone" type="tel" placeholder="0758610962" required style="width:100%;padding:10px;margin:5px 0;"/>
+  <select id="cService" name="service" style="width:100%;padding:10px;margin:5px 0;">
     <option>Website Design</option>
     <option>App Development</option>
     <option>Graphic Design</option>
   </select>
-  <textarea id="message" placeholder="Tell me about your project" style="width:100%;padding:10px;margin:5px 0;"></textarea>
-  <button type="submit" style="width:100%;padding:12px;background:black;color:white;">Send Request</button>
+  <textarea id="cMessage" name="message" placeholder="Tell me about your project" required style="width:100%;padding:10px;margin:5px 0;"></textarea>
+  
+  <input type="hidden" name="_subject" value="NEW CLIENT - Portfolio">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
+  
+  <button type="submit" id="sendBtn" style="width:100%;padding:12px;background:black;color:white;">Send Request</button>
 </form>
 
-<div style="padding:20px; background:#F5F5F5; margin-top:20px; border-radius:10px;">
-  <h2>Our Agencies - Live Data</h2>
-  <div id="agency-list">Loading agencies...</div>
-</div>
 <script>
-document.getElementById('contactForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const data = {
-    name: document.getElementById('name').value,
-    phone: document.getElementById('phone').value,
-    service: document.getElementById('service').value,
-    message: document.getElementById('message').value
-  };
-  try{
-    await fetch('https://agency-api-ab16.onrender.com/api/data',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(data)
-    });
-    alert('Sent! Stephen will call you soon.');
-  }catch(err){ alert('Error: '+err); }
+document.getElementById('contactForm').addEventListener('submit', function() {
+  const name = document.getElementById('cName').value;
+  const phone = document.getElementById('cPhone').value;
+  const service = document.getElementById('cService').value;
+  const message = document.getElementById('cMessage').value;
+  const waText = `*NEW CLIENT*%0AName: ${name}%0APhone: ${phone}%0AService: ${service}%0AMessage: ${message}`;
+  window.open(`https://wa.me/256758610962?text=${waText}`, '_blank');
 });
+</script>
 
 fetch('https://agency-api-ab16.onrender.com/api/users')
 .then(r=>r.json())
